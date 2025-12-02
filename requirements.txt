@@ -1,0 +1,16 @@
+Django==4.2.7
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+python-dotenv==1.0.0
+
+# Twitter/X Scraping
+tweepy==4.14.0
+
+# Sentiment Analysis - English
+vaderSentiment==3.3.2
+
+# Sentiment Analysis - Indonesian
+deep-translator==1.11.4
+
+# Utilities
+requests==2.31.0
