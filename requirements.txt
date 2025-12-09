@@ -14,3 +14,7 @@ deep-translator==1.11.4
 
 # Utilities
 requests==2.31.0
+mssql-django
+geopandas
+pandas
+shapely

@@ -13,6 +13,7 @@ def api_root(request):
             'admin': '/admin/',
             'twitter_scraper': '/api/twitter/',
             'sentiment_analysis': '/api/sentiment/',
+            'valemis': '/api/valemis/',
         }
     })
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', api_root, name='api-root'),
     path('api/twitter/', include('twitter_scraper.urls')),
+    path('api/valemis/', include('valemis.urls')),
 ]
