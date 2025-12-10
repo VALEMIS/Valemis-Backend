@@ -8,7 +8,7 @@ class Cache(models.Model):
     key = models.CharField(max_length=255, primary_key=True)
     value = models.TextField()
     expiration = models.BigIntegerField()
-
+    # tes = models.GeometryField
     class Meta:
         db_table = "cache"
 
