@@ -8,6 +8,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
 from shapely import wkt
+from rest_framework import viewsets
+from .models import Pidana
+from .serializers import *
 
 # ==============================
 # Helper: load layer from DB
@@ -139,3 +142,21 @@ def api_analyze(request):
 
 def tes():
     return JsonResponse({"mesage":"masuk bro"})
+
+
+# class PidanaViewSet(viewsets.ModelViewSet):
+#     queryset = Pidana.objects.all()
+#     serializer_class = PidanaSerializer
+# class ClaimViewSet(viewsets.ModelViewSet):
+#     queryset = Claim.objects.all()
+#     serializer_class = ClaimSerializer
+
+def generate_viewset(model_name):
+    model = apps.get_model('valemis', model_name)
+    serializer = generate_serializer(model_name)
+
+    class AutoViewSet(viewsets.ModelViewSet):
+        queryset = model.objects.all()
+        serializer_class = serializer
+
+    return AutoViewSet
