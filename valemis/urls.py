@@ -3,6 +3,8 @@ URL configuration for Valemis API
 """
 from django.urls import path, include
 from rest_framework import routers
+from django.apps import apps
+from .views import *
 from .views_api import (
     AssetInventoryViewSet,
     LandInventoryViewSet,
@@ -15,7 +17,11 @@ from .views_api import (
 
 # Create router and register viewsets
 router = routers.DefaultRouter()
+app_models = apps.get_app_config("valemis").get_models()
 
+for model in app_models:
+    name = model.__name__.lower()
+    router.register(name, generate_viewset(model.__name__))
 # Register all module viewsets
 router.register(r'assets', AssetInventoryViewSet, basename='asset')
 router.register(r'lands', LandInventoryViewSet, basename='land')
