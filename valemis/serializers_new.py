@@ -3,7 +3,7 @@ Serializers for all 6 Valemis ERP Modules
 """
 
 from rest_framework import serializers
-from .models_new import (
+from .models import (
     AssetInventory,
     LandInventory,
     LandDocument,

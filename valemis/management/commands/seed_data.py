@@ -6,7 +6,7 @@ Run with: python manage.py seed_data
 from django.core.management.base import BaseCommand
 from datetime import date, timedelta
 from decimal import Decimal
-from valemis.models_new import (
+from valemis.models import (
     AssetInventory,
     LandInventory,
     LandDocument,

@@ -90,11 +90,11 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'mssql',
-            'NAME': 'valemis',
-            'USER': 'sa',
-            'PASSWORD': 'kapxuJ-wedmu0-sirvew',
-            'HOST': '202.155.157.83',
-            'PORT': '1433',
+            'NAME': os.getenv('MSSQL_NAME', 'Valemis'),
+            'USER': os.getenv('MSSQL_USER', 'sa'),
+            'PASSWORD': os.getenv('MSSQL_PASSWORD', ''),
+            'HOST': os.getenv('MSSQL_HOST', 'localhost'),
+            'PORT': os.getenv('MSSQL_PORT', '1433'),
 
             'OPTIONS': {
                 'driver': 'ODBC Driver 17 for SQL Server',
@@ -137,8 +137,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS Settings
 CORS_ALLOWED_ORIGINS = os.getenv(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:5173,http://localhost:3000'
+    'http://localhost:5173,http://localhost:3000,https://valemis.id,https://www.valemis.id'
 ).split(',')
+
+# Allow all for development (remove in production)
+CORS_ALLOW_ALL_ORIGINS = False  # Set to True only for development
 
 CORS_ALLOW_METHODS = [
     'DELETE',
