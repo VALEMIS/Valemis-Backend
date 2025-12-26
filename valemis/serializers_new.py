@@ -28,15 +28,12 @@ class AssetInventorySerializer(serializers.ModelSerializer):
 
 
 class AssetInventoryListSerializer(serializers.ModelSerializer):
-    """Simplified serializer for list view"""
+    """Full serializer for list view - includes all census fields"""
     coordinates = serializers.ReadOnlyField()
-    
+
     class Meta:
         model = AssetInventory
-        fields = [
-            'id', 'code', 'owner_name', 'village', 'land_area', 
-            'building_area', 'certificate_status', 'coordinates', 'lat', 'lng'
-        ]
+        fields = '__all__'
 
 
 # =============================================================================

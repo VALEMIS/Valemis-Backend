@@ -594,9 +594,111 @@ class AssetInventory(models.Model):
 
     # Identifikasi Rumah Tangga dan PAP
     kode_enumerator = models.CharField(max_length=50, null=True, blank=True)
+    id_rumah_tangga = models.CharField(max_length=50, null=True, blank=True, verbose_name='ID Rumah Tangga')
     tanggal_survei = models.DateField(null=True, blank=True)
     kode_foto_survei = models.CharField(max_length=50, null=True, blank=True)
     id_unik = models.CharField(max_length=100, null=True, blank=True)
+
+    # Census Survey Fields (43 questions total)
+    # Question 3-8: Identifikasi tambahan
+    identifikasi_dampak = models.CharField(max_length=100, null=True, blank=True)
+    agama = models.CharField(max_length=50, null=True, blank=True)
+    agama_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Agama Lainnya')
+    asal_etnis = models.CharField(max_length=50, null=True, blank=True)
+    asal_etnis_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Asal Etnis Lainnya')
+    bahasa = models.CharField(max_length=50, null=True, blank=True)
+    bahasa_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Bahasa Lainnya')
+    tempat_asal_kk = models.CharField(max_length=100, null=True, blank=True)
+    tempat_asal_kk_tentukan = models.CharField(max_length=100, null=True, blank=True, verbose_name='Tempat Asal KK (Tentukan)')
+
+    # Question 9-16: Demografi
+    jumlah_orang_rumah_tangga = models.IntegerField(null=True, blank=True, verbose_name='Jumlah Orang dalam Rumah Tangga')
+    hubungan_kk = models.CharField(max_length=100, null=True, blank=True)
+    jenis_kelamin = models.CharField(max_length=20, null=True, blank=True)
+    usia = models.IntegerField(null=True, blank=True, verbose_name='Usia')
+    status_perkawinan = models.CharField(max_length=50, null=True, blank=True)
+    bisa_membaca_menulis = models.CharField(max_length=20, null=True, blank=True)
+    sedang_sekolah = models.CharField(max_length=10, null=True, blank=True)
+    lokasi_sekolah = models.CharField(max_length=50, null=True, blank=True)
+    pendidikan_terakhir = models.CharField(max_length=50, null=True, blank=True)
+    alasan_berhenti = models.CharField(max_length=100, null=True, blank=True)
+
+    # Question 17-18: Kesehatan
+    disabilitas = models.CharField(max_length=100, null=True, blank=True)
+    kondisi_kesehatan = models.TextField(null=True, blank=True)
+
+    # Question 19-23: Pekerjaan
+    bekerja_12_bulan = models.CharField(max_length=50, null=True, blank=True)
+    pekerjaan_utama = models.CharField(max_length=100, null=True, blank=True)
+    pekerjaan_utama_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Pekerjaan Utama Lainnya')
+    jenis_pekerjaan = models.CharField(max_length=100, null=True, blank=True)
+    lokasi_pekerjaan = models.CharField(max_length=100, null=True, blank=True)
+    lokasi_pekerjaan_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Lokasi Pekerjaan Lainnya')
+    jumlah_bulan_bekerja = models.IntegerField(null=True, blank=True, verbose_name='Jumlah Bulan Bekerja dalam Setahun')
+    penghasilan_per_bulan = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True, verbose_name='Penghasilan per Bulan')
+    pekerjaan_sekunder = models.CharField(max_length=100, null=True, blank=True, verbose_name='Pekerjaan Sekunder')
+    pekerjaan_sekunder_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Pekerjaan Sekunder Lainnya')
+    lokasi_pekerjaan_sekunder = models.CharField(max_length=100, null=True, blank=True, verbose_name='Lokasi Pekerjaan Sekunder')
+    lokasi_pekerjaan_sekunder_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Lokasi Pekerjaan Sekunder Lainnya')
+    jumlah_bulan_bekerja_sekunder = models.IntegerField(null=True, blank=True, verbose_name='Jumlah Bulan Bekerja Sekunder')
+    penghasilan_sekunder_per_bulan = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True, verbose_name='Penghasilan Sekunder per Bulan')
+    keterampilan = models.TextField(null=True, blank=True)
+    keterampilan_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Keterampilan Lainnya')
+
+    # Question 24-25: Kesehatan lanjutan
+    penyakit_umum = models.TextField(null=True, blank=True)
+    tempat_pelayanan = models.CharField(max_length=100, null=True, blank=True)
+
+    # Question 26-27: Pangan
+    kecukupan_pangan = models.CharField(max_length=50, null=True, blank=True)
+    defisit_pangan = models.TextField(null=True, blank=True)
+    defisit_pangan_lainnya = models.CharField(max_length=200, null=True, blank=True, verbose_name='Defisit Pangan Lainnya')
+
+    # Question 28-31: Keuangan
+    penghasilan_tahunan = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    pengeluaran_bulanan = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    rekening_bank = models.CharField(max_length=10, null=True, blank=True)
+    tabungan = models.CharField(max_length=100, null=True, blank=True)
+    tabungan_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Tabungan Lainnya')
+    hutang = models.CharField(max_length=100, null=True, blank=True)
+    hutang_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Hutang Lainnya')
+    alasan_hutang = models.TextField(null=True, blank=True)
+
+    # Question 36-39: Bisnis & Dampak Pembebasan Lahan
+    pernah_dampak_proyek = models.CharField(max_length=10, null=True, blank=True, verbose_name='Pernah Dampak Proyek Lain')
+    jenis_proyek = models.CharField(max_length=100, null=True, blank=True)
+    jenis_proyek_lain = models.CharField(max_length=100, null=True, blank=True, verbose_name='Jenis Proyek Lain')
+    luas_lahan_dibebaskan = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name='Luas Lahan Dibebaskan (m2)')
+    pernah_pengungsi = models.CharField(max_length=10, null=True, blank=True, verbose_name='Pernah Menjadi Pengungsi')
+    punya_bisnis = models.CharField(max_length=10, null=True, blank=True, verbose_name='Punya Bisnis')
+    lokasi_bisnis = models.CharField(max_length=100, null=True, blank=True)
+    lokasi_bisnis_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Lokasi Bisnis Lainnya')
+    kepemilikan_bisnis = models.CharField(max_length=100, null=True, blank=True)
+    kepemilikan_bisnis_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Kepemilikan Bisnis Lainnya')
+    sejak_kapan_bisnis = models.CharField(max_length=50, null=True, blank=True, verbose_name='Sejak Kapan Bisnis Aktif')
+    jenis_bisnis = models.CharField(max_length=100, null=True, blank=True)
+    jenis_bisnis_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Jenis Bisnis Lainnya')
+    jumlah_pegawai = models.IntegerField(null=True, blank=True, verbose_name='Jumlah Pegawai')
+    pendapatan_rata_bisnis = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True, verbose_name='Pendapatan Rata-rata Bisnis')
+    deskripsi_produk_layanan = models.TextField(null=True, blank=True, verbose_name='Deskripsi Produk dan Layanan')
+
+    # Question 40-43: Perumahan
+    tipe_rumah = models.CharField(max_length=100, null=True, blank=True)
+    tipe_rumah_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Tipe Rumah Lainnya')
+    pelayanan_listrik = models.CharField(max_length=100, null=True, blank=True)
+    pelayanan_listrik_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Pelayanan Listrik Lainnya')
+    sumber_air = models.CharField(max_length=100, null=True, blank=True)
+    sumber_air_lainnya = models.CharField(max_length=100, null=True, blank=True, verbose_name='Sumber Air Lainnya')
+    sanitasi = models.CharField(max_length=100, null=True, blank=True)
+
+    # Question 44-45: Kerentanan
+    karakteristik_khusus = models.TextField(null=True, blank=True)
+    karakteristik_krt = models.TextField(null=True, blank=True, verbose_name='Karakteristik Kepala Rumah Tangga')
+    pembagian_kerja = models.CharField(max_length=50, null=True, blank=True)
+
+    # Additional metadata
+    surveyed_by = models.CharField(max_length=100, null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -791,10 +893,11 @@ class Litigation(models.Model):
     ]
 
     STATUS_CHOICES = [
-        ('Active', 'Aktif'),
-        ('Under Review', 'Dalam Proses'),
-        ('Resolved', 'Selesai'),
-        ('Dismissed', 'Ditolak'),
+        ('Negosiasi Tahap 1', 'Negosiasi Tahap 1'),
+        ('Negosiasi Tahap 2', 'Negosiasi Tahap 2'),
+        ('Negosiasi Tahap 3', 'Negosiasi Tahap 3'),
+        ('Putusan Clear', 'Putusan Clear'),
+        ('Putusan Pengadilan', 'Putusan Pengadilan'),
     ]
 
     PRIORITY_CHOICES = [
@@ -809,7 +912,7 @@ class Litigation(models.Model):
     claimant = models.CharField(max_length=255)
     description = models.TextField()
     start_date = models.DateField()
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Active')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Negosiasi Tahap 1')
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='Medium')
 
     # Relationship to Land Inventory (optional)
@@ -912,4 +1015,166 @@ class StakeholderInvolvementNew(models.Model):
         verbose_name_plural = 'Stakeholder Involvements'
 
     def __str__(self):
-        return f"{self.stakeholder.nama} - {self.object_type} ({self.role})"
+        return f"{self.stakeholder.nama} - {self.object_type} ({self.role})""""
+Models for Census Survey (LARAP - Land Acquisition and Resettlement Action Plan)
+This file contains models for socio-economic household surveys.
+"""
+from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+
+
+class CensusSurvey(models.Model):
+    """
+    Main Census Survey Model - Household Level Data
+    Contains all 43 questions from the LARAP Census Survey Template
+    """
+    # Section A: Identification
+    q1_kode_enumerator = models.CharField(max_length=50, verbose_name="Kode Enumerator")
+    q2_id_unik = models.CharField(max_length=100, verbose_name="ID Unik (ID Entitas Terdampak)")
+    q3_hubungan_responden = models.CharField(max_length=100, blank=True, null=True, verbose_name="Hubungan responden dengan KK")
+    q4_identifikasi_dampak = models.CharField(max_length=100, blank=True, null=True, verbose_name="Identifikasi Dampak")
+    q5_agama = models.CharField(max_length=50, blank=True, null=True, verbose_name="Agama")
+    q6_asal_etnis = models.CharField(max_length=50, blank=True, null=True, verbose_name="Asal etnis")
+    q7_bahasa = models.CharField(max_length=50, blank=True, null=True, verbose_name="Bahasa")
+    q8_tempat_asal = models.CharField(max_length=100, blank=True, null=True, verbose_name="Tempat Asal Kepala Keluarga")
+    q9_hubungan_kk = models.CharField(max_length=100, blank=True, null=True, verbose_name="Hubungan dengan Kepala Keluarga")
+    q10_jenis_kelamin = models.CharField(max_length=20, blank=True, null=True, verbose_name="Jenis kelamin")
+    q11_status_perkawinan = models.CharField(max_length=50, blank=True, null=True, verbose_name="Status Perkawinan")
+    q12_bisa_membaca_menulis = models.CharField(max_length=20, blank=True, null=True, verbose_name="Bisa Membaca/Menulis")
+    q13_sedang_sekolah = models.CharField(max_length=10, blank=True, null=True, verbose_name="Sedang Sekolah")
+    q14_lokasi_sekolah = models.CharField(max_length=50, blank=True, null=True, verbose_name="Lokasi sekolah")
+    q15_pendidikan_terakhir = models.CharField(max_length=50, blank=True, null=True, verbose_name="Tingkat Pendidikan Terakhir")
+    q16_alasan_berhenti = models.CharField(max_length=100, blank=True, null=True, verbose_name="Alasan berhenti sekolah")
+    q17_disabilitas = models.CharField(max_length=100, blank=True, null=True, verbose_name="Disabilitas")
+    q18_kondisi_kesehatan = models.TextField(blank=True, null=True, verbose_name="Kondisi Kesehatan Kronis")
+    q19_bekerja_12_bulan = models.CharField(max_length=50, blank=True, null=True, verbose_name="Bekerja dalam 12 bulan terakhir")
+    q20_pekerjaan_utama = models.CharField(max_length=100, blank=True, null=True, verbose_name="Pekerjaan Utama")
+    q21_jenis_pekerjaan = models.CharField(max_length=100, blank=True, null=True, verbose_name="Jenis pekerjaan")
+    q22_lokasi_pekerjaan = models.CharField(max_length=100, blank=True, null=True, verbose_name="Lokasi pekerjaan")
+    q23_keterampilan = models.TextField(blank=True, null=True, verbose_name="Keterampilan/profesi (15+ tahun)")
+    q24_penyakit_umum = models.TextField(blank=True, null=True, verbose_name="Dua penyakit paling umum")
+    q25_tempat_pelayanan = models.CharField(max_length=100, blank=True, null=True, verbose_name="Tempat pelayanan kesehatan")
+    q26_kecukupan_pangan = models.CharField(max_length=50, blank=True, null=True, verbose_name="Kecukupan pangan")
+    q27_defisit_pangan = models.TextField(blank=True, null=True, verbose_name="Cara menutupi defisit pangan")
+    q28_penghasilan_tahunan = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Penghasilan tahunan")
+    q31_pengeluaran_bulanan = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Pengeluaran bulanan")
+    q32_rekening_bank = models.CharField(max_length=10, blank=True, null=True, verbose_name="Punya rekening bank")
+    q33_tabungan = models.CharField(max_length=100, blank=True, null=True, verbose_name="Jenis tabungan")
+    q34_hutang = models.CharField(max_length=100, blank=True, null=True, verbose_name="Jenis hutang")
+    q35_alasan_hutang = models.TextField(blank=True, null=True, verbose_name="Alasan hutang")
+    q36_jenis_proyek = models.CharField(max_length=100, blank=True, null=True, verbose_name="Jenis Proyek")
+    q37_lokasi_bisnis = models.CharField(max_length=100, blank=True, null=True, verbose_name="Lokasi bisnis")
+    q38_kepemilikan_bisnis = models.CharField(max_length=100, blank=True, null=True, verbose_name="Kepemilikan bisnis")
+    q39_jenis_bisnis = models.CharField(max_length=100, blank=True, null=True, verbose_name="Jenis bisnis")
+    q40_tipe_rumah = models.CharField(max_length=100, blank=True, null=True, verbose_name="Tipe rumah")
+    q41_pelayanan_listrik = models.CharField(max_length=100, blank=True, null=True, verbose_name="Pelayanan Listrik")
+    q42_sumber_air = models.CharField(max_length=100, blank=True, null=True, verbose_name="Sumber Air Minum")
+    q43_sanitasi = models.CharField(max_length=100, blank=True, null=True, verbose_name="Sanitasi")
+    q44_karakteristik_khusus = models.TextField(blank=True, null=True, verbose_name="Karakteristik khusus")
+    q45_pembagian_kerja = models.CharField(max_length=50, blank=True, null=True, verbose_name="Pembagian kerja laki-perempuan")
+
+    # Metadata
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Dibuat pada")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Diperbarui pada")
+    surveyed_by = models.CharField(max_length=100, blank=True, null=True, verbose_name="Disurvei oleh")
+    survey_date = models.DateField(blank=True, null=True, verbose_name="Tanggal survei")
+    coordinates = models.CharField(max_length=100, blank=True, null=True, verbose_name="Koordinat")
+    village = models.CharField(max_length=100, blank=True, null=True, verbose_name="Desa")
+    district = models.CharField(max_length=100, blank=True, null=True, verbose_name="Kecamatan")
+    regency = models.CharField(max_length=100, blank=True, null=True, verbose_name="Kabupaten")
+    province = models.CharField(max_length=100, blank=True, null=True, verbose_name="Provinsi")
+    notes = models.TextField(blank=True, null=True, verbose_name="Catatan")
+
+    class Meta:
+        db_table = 'census_survey'
+        verbose_name = "Census Survey"
+        verbose_name_plural = "Census Surveys"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.q1_kode_enumerator} - {self.q2_id_unik}"
+
+
+class CensusMember(models.Model):
+    """
+    Individual household members (for questions at individual level)
+    Links to main CensusSurvey
+    """
+    GENDER_CHOICES = [
+        ('1', 'Laki-laki'),
+        ('2', 'Perempuan'),
+        ('97', 'Lainnya'),
+    ]
+
+    RELATIONSHIP_CHOICES = [
+        ('1', 'Kepala Keluarga'),
+        ('2', 'Pasangan'),
+        ('3', 'Anak Laki-laki / Anak Perempuan'),
+        ('4', 'Menantu Laki-laki / Menantu Perempuan'),
+        ('5', 'Cucu Laki-laki / Cucu Perempuan'),
+        ('6', 'Ayah / Ibu'),
+        ('7', 'Mertua'),
+        ('8', 'Saudara Laki-laki / Saudara Perempuan'),
+        ('9', 'Ipar Laki-laki / Ipar Perempuan'),
+        ('10', 'Kerabat lain'),
+        ('11', 'Sepupu'),
+        ('12', 'Bukan kerabat lain'),
+    ]
+
+    # Link to household survey
+    household = models.ForeignKey(CensusSurvey, on_delete=models.CASCADE, related_name='members', verbose_name="Rumah Tangga")
+
+    # Member information
+    nama_depan = models.CharField(max_length=100, verbose_name="Nama Depan")
+    nama_tengah = models.CharField(max_length=100, blank=True, null=True, verbose_name="Nama Tengah")
+    nama_belakang = models.CharField(max_length=100, blank=True, null=True, verbose_name="Nama Belakang")
+    hubungan_kk = models.CharField(max_length=50, choices=RELATIONSHIP_CHOICES, verbose_name="Hubungan dengan KK")
+    jenis_kelamin = models.CharField(max_length=10, choices=GENDER_CHOICES, verbose_name="Jenis kelamin")
+    usia = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(150)], verbose_name="Usia")
+    status_perkawinan = models.CharField(max_length=50, blank=True, null=True, verbose_name="Status Perkawinan")
+    bisa_membaca_menulis = models.CharField(max_length=20, blank=True, null=True, verbose_name="Bisa Membaca/Menulis")
+    sedang_sekolah = models.CharField(max_length=10, blank=True, null=True, verbose_name="Sedang Sekolah")
+    lokasi_sekolah = models.CharField(max_length=50, blank=True, null=True, verbose_name="Lokasi sekolah")
+    pendidikan_terakhir = models.CharField(max_length=50, blank=True, null=True, verbose_name="Pendidikan Terakhir")
+    alasan_berhenti = models.CharField(max_length=100, blank=True, null=True, verbose_name="Alasan berhenti sekolah")
+    disabilitas = models.CharField(max_length=100, blank=True, null=True, verbose_name="Disabilitas")
+    kondisi_kesehatan = models.TextField(blank=True, null=True, verbose_name="Kondisi Kesehatan Kronis")
+    bekerja_12_bulan = models.CharField(max_length=50, blank=True, null=True, verbose_name="Bekerja dalam 12 bulan")
+    pekerjaan_utama = models.CharField(max_length=100, blank=True, null=True, verbose_name="Pekerjaan Utama")
+    jenis_pekerjaan = models.CharField(max_length=100, blank=True, null=True, verbose_name="Jenis pekerjaan")
+    lokasi_pekerjaan = models.CharField(max_length=100, blank=True, null=True, verbose_name="Lokasi pekerjaan")
+    keterampilan = models.TextField(blank=True, null=True, verbose_name="Keterampilan/profesi")
+
+    class Meta:
+        db_table = 'census_member'
+        verbose_name = "Census Member"
+        verbose_name_plural = "Census Members"
+        ordering = ['household', 'id']
+
+    def __str__(self):
+        return f"{self.nama_depan} {self.nama_belakang} - {self.household.q2_id_unik}"
+
+
+class CensusQuestion(models.Model):
+    """
+    Master list of questions with their dropdown options
+    """
+    question_number = models.IntegerField(unique=True, verbose_name="Nomor Soal")
+    question_text = models.TextField(verbose_name="Pertanyaan")
+    field_name = models.CharField(max_length=100, unique=True, verbose_name="Nama Field")
+    category = models.CharField(max_length=100, blank=True, null=True, verbose_name="Kategori")
+    options = models.JSONField(default=list, verbose_name="Opsi Jawaban")
+    is_required = models.BooleanField(default=False, verbose_name="Wajib Diisi")
+    validation_type = models.CharField(max_length=50, blank=True, null=True,
+                                       choices=[('text', 'Text'), ('number', 'Number'),
+                                              ('date', 'Date'), ('email', 'Email')],
+                                       verbose_name="Tipe Validasi")
+
+    class Meta:
+        db_table = 'census_question'
+        verbose_name = "Census Question"
+        verbose_name_plural = "Census Questions"
+        ordering = ['question_number']
+
+    def __str__(self):
+        return f"{self.question_number}. {self.question_text[:50]}"

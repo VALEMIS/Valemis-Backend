@@ -14,6 +14,11 @@ from .views_api import (
     StakeholderViewSet,
     StakeholderInvolvementViewSet,
 )
+from .views_census import (
+    CensusSurveyViewSet,
+    CensusMemberViewSet,
+    CensusQuestionViewSet,
+)
 
 # Create router and register viewsets
 router = routers.DefaultRouter()
@@ -30,6 +35,10 @@ router.register(r'compliances', LandComplianceViewSet, basename='compliance')
 router.register(r'litigations', LitigationViewSet, basename='litigation')
 router.register(r'stakeholders', StakeholderViewSet, basename='stakeholder')
 router.register(r'stakeholder-involvements', StakeholderInvolvementViewSet, basename='stakeholder-involvement')
+# Register census survey viewsets
+router.register(r'census', CensusSurveyViewSet, basename='census')
+router.register(r'census-members', CensusMemberViewSet, basename='census-member')
+router.register(r'questions', CensusQuestionViewSet, basename='question')
 
 urlpatterns = [
     path("", include(router.urls)),

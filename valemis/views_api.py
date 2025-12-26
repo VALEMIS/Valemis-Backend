@@ -291,10 +291,11 @@ class LitigationViewSet(viewsets.ModelViewSet):
         """Get litigation statistics"""
         litigations = self.queryset
         return Response({
-            'active': litigations.filter(status='Active').count(),
-            'underReview': litigations.filter(status='Under Review').count(),
-            'resolved': litigations.filter(status='Resolved').count(),
-            'dismissed': litigations.filter(status='Dismissed').count(),
+            'negosiasiTahap1': litigations.filter(status='Negosiasi Tahap 1').count(),
+            'negosiasiTahap2': litigations.filter(status='Negosiasi Tahap 2').count(),
+            'negosiasiTahap3': litigations.filter(status='Negosiasi Tahap 3').count(),
+            'putusanClear': litigations.filter(status='Putusan Clear').count(),
+            'putusanPengadilan': litigations.filter(status='Putusan Pengadilan').count(),
             'total': litigations.count()
         })
 
@@ -309,8 +310,12 @@ class LitigationViewSet(viewsets.ModelViewSet):
                 breakdown.append({
                     'name': ctype,
                     'total': items.count(),
-                    'active': items.filter(status='Active').count(),
-                    'resolved': items.filter(status='Resolved').count()
+                    'active': items.filter(
+                        status__in=['Negosiasi Tahap 1', 'Negosiasi Tahap 2', 'Negosiasi Tahap 3']
+                    ).count(),
+                    'resolved': items.filter(
+                        status__in=['Putusan Clear', 'Putusan Pengadilan']
+                    ).count()
                 })
         return Response(breakdown)
 
@@ -319,7 +324,7 @@ class LitigationViewSet(viewsets.ModelViewSet):
         """Get high priority cases"""
         high_priority = self.queryset.filter(
             priority='High'
-        ).exclude(status='Resolved')[:5]
+        ).exclude(status__in=['Putusan Clear', 'Putusan Pengadilan'])[:5]
         return Response(LitigationListSerializer(high_priority, many=True).data)
 
 
