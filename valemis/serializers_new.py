@@ -5,6 +5,7 @@ Serializers for all 6 Valemis ERP Modules
 from rest_framework import serializers
 from .models import (
     AssetInventory,
+    AssetInventoryDetail,
     LandInventory,
     LandDocument,
     LandAcquisition,
@@ -18,9 +19,16 @@ from .models import (
 # =============================================================================
 # 1. ASSET INVENTORY SERIALIZERS
 # =============================================================================
+class AssetInventoryDetailSerializer(serializers.ModelSerializer):
+    """Serializer for Asset Inventory Detail (Inventaris Aset - 5 asset types)"""
+    class Meta:
+        model = AssetInventoryDetail
+        fields = '__all__'
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+
 class AssetInventorySerializer(serializers.ModelSerializer):
-    coordinates = serializers.ReadOnlyField()
-    
+    """Full serializer with 105 Kuisioner fields"""
     class Meta:
         model = AssetInventory
         fields = '__all__'
@@ -28,9 +36,7 @@ class AssetInventorySerializer(serializers.ModelSerializer):
 
 
 class AssetInventoryListSerializer(serializers.ModelSerializer):
-    """Full serializer for list view - includes all census fields"""
-    coordinates = serializers.ReadOnlyField()
-
+    """Full serializer for list view - includes all 105 Kuisioner fields"""
     class Meta:
         model = AssetInventory
         fields = '__all__'

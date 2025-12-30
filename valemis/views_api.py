@@ -7,8 +7,11 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Count, Sum
+from django.http import HttpResponse
+import csv
 from .models import (
     AssetInventory,
+    AssetInventoryDetail,
     LandInventory,
     LandDocument,
     LandAcquisition,
@@ -20,6 +23,7 @@ from .models import (
 from .serializers_new import (
     AssetInventorySerializer,
     AssetInventoryListSerializer,
+    AssetInventoryDetailSerializer,
     LandInventorySerializer,
     LandInventoryListSerializer,
     LandDocumentSerializer,
@@ -71,6 +75,65 @@ class AssetInventoryViewSet(viewsets.ModelViewSet):
                 'totalArea': float(assets.aggregate(total=Sum('land_area'))['total'] or 0)
             })
         return Response(summary)
+
+    @action(detail=False, methods=['get'])
+    def export_csv(self, request):
+        """Export all asset inventory data to CSV"""
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="asset_inventory.csv"'
+
+        writer = csv.writer(response)
+        # Write header
+        fields = [f.name for f in AssetInventory._meta.fields if f.name not in ['id', 'created_at', 'updated_at']]
+        writer.writerow(fields)
+
+        # Write data
+        for asset in self.queryset:
+            row = [getattr(asset, field) for field in fields]
+            writer.writerow(row)
+
+        return response
+
+
+class AssetInventoryDetailViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for Asset Inventory Detail (Inventaris Aset - 5 asset types)
+
+    GET /api/valemis/asset-details/ - List all asset details
+    POST /api/valemis/asset-details/ - Create new asset detail
+    GET /api/valemis/asset-details/{id}/ - Retrieve asset detail
+    PUT /api/valemis/asset-details/{id}/ - Update asset detail
+    DELETE /api/valemis/asset-details/{id}/ - Delete asset detail
+    GET /api/valemis/asset-details/by-type/{asset_type}/ - Filter by asset type
+    GET /api/valemis/asset-details/export/csv/ - Export to CSV
+    """
+    queryset = AssetInventoryDetail.objects.all()
+    serializer_class = AssetInventoryDetailSerializer
+
+    @action(detail=False, methods=['get'], url_path='by-type/(?P<asset_type>[^/]+)')
+    def by_type(self, request, asset_type=None):
+        """Filter assets by type (Tanah, Tanaman, Pohon, Bangunan, Sumber Daya Alam)"""
+        assets = self.queryset.filter(asset_type=asset_type)
+        serializer = self.get_serializer(assets, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def export_csv(self, request):
+        """Export all asset detail data to CSV"""
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="asset_inventory_detail.csv"'
+
+        writer = csv.writer(response)
+        # Write header
+        fields = [f.name for f in AssetInventoryDetail._meta.fields if f.name not in ['id', 'created_at', 'updated_at']]
+        writer.writerow(fields)
+
+        # Write data
+        for asset in self.queryset:
+            row = [getattr(asset, field) for field in fields]
+            writer.writerow(row)
+
+        return response
 
 
 # =============================================================================
@@ -137,6 +200,24 @@ class LandInventoryViewSet(viewsets.ModelViewSet):
             'categoryBreakdown': category_breakdown,
             'certificateBreakdown': certificate_breakdown
         })
+
+    @action(detail=False, methods=['get'])
+    def export_csv(self, request):
+        """Export all land inventory data to CSV"""
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="land_inventory.csv"'
+
+        writer = csv.writer(response)
+        # Write header
+        fields = [f.name for f in LandInventory._meta.fields if f.name not in ['id', 'created_at', 'updated_at']]
+        writer.writerow(fields)
+
+        # Write data
+        for land in self.queryset:
+            row = [getattr(land, field) for field in fields]
+            writer.writerow(row)
+
+        return response
 
 
 # =============================================================================
@@ -205,6 +286,24 @@ class LandAcquisitionViewSet(viewsets.ModelViewSet):
         acquisition.save()
         return Response(LandAcquisitionSerializer(acquisition).data)
 
+    @action(detail=False, methods=['get'])
+    def export_csv(self, request):
+        """Export all land acquisition data to CSV"""
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="land_acquisition.csv"'
+
+        writer = csv.writer(response)
+        # Write header
+        fields = [f.name for f in LandAcquisition._meta.fields if f.name not in ['id', 'created_at', 'updated_at']]
+        writer.writerow(fields)
+
+        # Write data
+        for item in self.queryset:
+            row = [getattr(item, field) for field in fields]
+            writer.writerow(row)
+
+        return response
+
 
 # =============================================================================
 # 4. LAND COMPLIANCE VIEWSET
@@ -262,6 +361,24 @@ class LandComplianceViewSet(viewsets.ModelViewSet):
             status__in=['Expired', 'Expiring Soon']
         ).order_by('expiry_date')[:5]
         return Response(LandComplianceListSerializer(urgent, many=True).data)
+
+    @action(detail=False, methods=['get'])
+    def export_csv(self, request):
+        """Export all land compliance data to CSV"""
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="land_compliance.csv"'
+
+        writer = csv.writer(response)
+        # Write header
+        fields = [f.name for f in LandCompliance._meta.fields if f.name not in ['id', 'created_at', 'updated_at']]
+        writer.writerow(fields)
+
+        # Write data
+        for item in self.queryset:
+            row = [getattr(item, field) for field in fields]
+            writer.writerow(row)
+
+        return response
 
 
 # =============================================================================
@@ -327,6 +444,24 @@ class LitigationViewSet(viewsets.ModelViewSet):
         ).exclude(status__in=['Putusan Clear', 'Putusan Pengadilan'])[:5]
         return Response(LitigationListSerializer(high_priority, many=True).data)
 
+    @action(detail=False, methods=['get'])
+    def export_csv(self, request):
+        """Export all litigation data to CSV"""
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="litigation.csv"'
+
+        writer = csv.writer(response)
+        # Write header
+        fields = [f.name for f in Litigation._meta.fields if f.name not in ['id', 'created_at', 'updated_at']]
+        writer.writerow(fields)
+
+        # Write data
+        for item in self.queryset:
+            row = [getattr(item, field) for field in fields]
+            writer.writerow(row)
+
+        return response
+
 
 # =============================================================================
 # 6. STAKEHOLDER VIEWSET
@@ -374,6 +509,24 @@ class StakeholderViewSet(viewsets.ModelViewSet):
                 'id': sh.id
             })
         return Response(data)
+
+    @action(detail=False, methods=['get'])
+    def export_csv(self, request):
+        """Export all stakeholder data to CSV"""
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="stakeholders.csv"'
+
+        writer = csv.writer(response)
+        # Write header
+        fields = [f.name for f in StakeholderNew._meta.fields if f.name not in ['id', 'created_at', 'updated_at']]
+        writer.writerow(fields)
+
+        # Write data
+        for item in self.queryset:
+            row = [getattr(item, field) for field in fields]
+            writer.writerow(row)
+
+        return response
 
 
 class StakeholderInvolvementViewSet(viewsets.ModelViewSet):

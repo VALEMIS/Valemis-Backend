@@ -7,6 +7,7 @@ from django.apps import apps
 from .views import *
 from .views_api import (
     AssetInventoryViewSet,
+    AssetInventoryDetailViewSet,
     LandInventoryViewSet,
     LandAcquisitionViewSet,
     LandComplianceViewSet,
@@ -29,6 +30,7 @@ for model in app_models:
     router.register(name, generate_viewset(model.__name__))
 # Register all module viewsets
 router.register(r'assets', AssetInventoryViewSet, basename='asset')
+router.register(r'asset-details', AssetInventoryDetailViewSet, basename='asset-detail')
 router.register(r'lands', LandInventoryViewSet, basename='land')
 router.register(r'acquisitions', LandAcquisitionViewSet, basename='acquisition')
 router.register(r'compliances', LandComplianceViewSet, basename='compliance')
