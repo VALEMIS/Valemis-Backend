@@ -3,11 +3,11 @@ import json
 import tempfile
 import zipfile
 
-import geopandas as gpd
+# import geopandas as gpd  # DISABLED - requires GDAL
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
-from shapely import wkt
+# from shapely import wkt  # DISABLED - requires GDAL
 from rest_framework import viewsets
 from .models import Pidana
 from .serializers import *

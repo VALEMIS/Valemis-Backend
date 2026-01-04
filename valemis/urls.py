@@ -20,6 +20,10 @@ from .views_census import (
     CensusMemberViewSet,
     CensusQuestionViewSet,
 )
+from .views_census_larap import (
+    CensusKepalaKeluargaViewSet,
+    CensusIndividuViewSet,
+)
 
 # Create router and register viewsets
 router = routers.DefaultRouter()
@@ -41,6 +45,9 @@ router.register(r'stakeholder-involvements', StakeholderInvolvementViewSet, base
 router.register(r'census', CensusSurveyViewSet, basename='census')
 router.register(r'census-members', CensusMemberViewSet, basename='census-member')
 router.register(r'questions', CensusQuestionViewSet, basename='question')
+# Register census LARAP viewsets
+router.register(r'census-kepala-keluarga', CensusKepalaKeluargaViewSet, basename='census-kepala-keluarga')
+router.register(r'census-individu', CensusIndividuViewSet, basename='census-individu')
 
 urlpatterns = [
     path("", include(router.urls)),

@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',  # GIS support - requires GDAL
+    # 'django.contrib.gis',  # GIS support - requires GDAL - DISABLED for census migration
     
     # Third party apps
     'rest_framework',
@@ -98,6 +98,7 @@ else:
 
             'OPTIONS': {
                 'driver': 'ODBC Driver 17 for SQL Server',
+                'extra_params': 'Connection Timeout=60;Login Timeout=60;',
             },
         }
     }
